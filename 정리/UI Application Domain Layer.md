@@ -2,19 +2,30 @@
 
 - 프로젝트 설정(Dependencies)
   - Spring Web Starter
-    - Rest API를 사용할 수 있음.
+    - Rest API 사용
   - Spring Boot DevTools
     - 개발의 원활한 지원
   - LomBok
-    - 자동완성
+    - 자동완성 지원
 
+### 프로젝트 구조
 
-
+- UI Layer
+    - 생성자와 가장 가까운 Layer로서, controller에 관련된 정보가 있음
+- Application Layer
+    - Controller 내에 복잡한 로직들을 단순화 하기 위함
+    - Service와 같은 비즈니스 로직 구현이 이루어지는 곳
+- Domain Layer
+    - DTO(Member) 및 Repository 관리
+    - Repository
+        - Member 및 Member의 Collection을 관리하고, Member의 필요정보를 가지고 있음
+        - Ex. findAll(모든 리스트) || findById(상세) 
+    
 ### 멀티 프로젝트 구조로 만들기
 
 1. api 패키지 생성
 
-2. src 및 build.gradle 해당 패키지에 삽입
+2. src 및 build.gradle 해당 패키지(api)에 삽입
 
 3. api안에 UI Layer(interfaces) 패키지 생성
 
@@ -29,9 +40,9 @@
 
       1. Controller의 복잡성을 단순화 시킴
 
-   2. RestaurentService가 들어감
-
-   3. ```
+   2. Service가 들어감
+      ```
+      [예]
       //id를 줄게 레스토랑의 기본정보와 메뉴정보를 달라.
       
       [복잡한 controller]
@@ -60,13 +71,10 @@
 
       1. DTO의 저장소
 
-      2. 이 부분은 도메인 Layer에 속함
-
-      3. 기대하는 것
+      2. 기대하는 것
 
          1. Controller 부분을 respository로 옮겨 controller는 사용자와 내부의 비즈니스 로직과 상관 없고 징검다리 역할만 할 수 있게끔 함
-         2. 비즈니스 로직은 도메인 모델쪽에 위치하도록 함
-         3. 
+         2. DTO의 관리는 도메인 모델쪽에 위치하도록 함
 
          ```
          [Controller]
@@ -125,7 +133,7 @@
 - 웹과 모바일 등 다양한 환경을 지원해야 함
   - 서로 다른 Front-end를 둬야함
   - 이들이 공통으로 사용하는 Back-end을 둠
-  - 이 때의 Back-end는 Rest API를 활용
+  - 이 때의 Back-end는 **Rest API**를 활용
 - REST
   - 표현 상태를 전달
 - Resource
@@ -167,7 +175,7 @@
   - Controller는 Repository에 의존
   - Repository 생성은 Controller가 책임을 가짐
   - 즉, Controller에 Repository를 연결
-  - 하지만 Repository 생성을 Spring IoC Container가 대신 해줌으로써, 개발자 역할 편해짐
+  - 하지만 Repository 생성을 Spring IoC Container가 대신 해줌
     - 어노테이션을 사용해 스프링이 관리
       - @Component
       - @Autowired
@@ -175,7 +183,7 @@
 - 도움이 되는 점
 
   - 사용해야할 객체를 다양하게 변경 가능
-    - 즉, 인터페이스와 구현체를 통해 인터페이스에게 의존성 주입을 하게 되면 사용해야할 구현체를 다양하게 변경 가능함.
+    - 즉, 인터페이스(추상)와 구현체로 인해 인터페이스에게 의존성 주입을 하게 되면 사용해야할 구현체를 다양하게 변경 가능함.
     - 그로인해, 인터페이스를 의존하고 있는 객체는 구현체를 변경해도(메소드를 제외한) 영향이 끼치지 않음.
 
 - Test에서는 직접 의존성 주입해줘야 함.
